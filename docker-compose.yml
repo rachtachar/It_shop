@@ -1,0 +1,40 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # Service สำหรับ Database (ใช้ Image MySQL แทน XAMPP)
+  database:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} # ดึงค่าจากไฟล์ .env
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - db-data:/var/lib/mysql # เก็บข้อมูล DB ไว้แม้จะปิด Container
+
+  # Service สำหรับ Backend
+  backend:
+    build: ./backend # บอกให้สร้าง Image จาก Dockerfile ในโฟลเดอร์ backend
+    restart: always
+    ports:
+      - "5000:5000" # Map Port 5000 ของเครื่องเรากับ Port 5000 ใน Container
+    environment:
+      - DB_HOST=database # ✨ สำคัญ: Host ของ DB คือชื่อ Service 'database'
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    depends_on:
+      - database # บอกให้ Backend รอจนกว่า Database จะพร้อมทำงาน
+
+  # Service สำหรับ Frontend
+  frontend:
+    build: ./frontend # บอกให้สร้าง Image จาก Dockerfile ในโฟลเดอร์ frontend
+    restart: always
+    ports:
+      - "3000:80" # Map Port 3000 ของเครื่องเรากับ Port 80 ของ Nginx ใน Container
+
+volumes:
+  db-data: # สร้าง Volume ชื่อ db-data
