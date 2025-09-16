@@ -15,6 +15,7 @@ import {
     IconButton
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Navbar from '../components/Navbar';
 
 function ProductDetailPage() {
     const { id } = useParams(); // ดึง id ของสินค้าจาก URL
@@ -80,10 +81,16 @@ function ProductDetailPage() {
     };
 
     return (
+        <>
+        <Navbar />
         <Container sx={{ py: 4 }}>
-            <IconButton onClick={() => navigate(-1)} sx={{ mr: 2 }}>
-                    <ArrowBackIcon />
-            </IconButton>
+            <Button
+                startIcon={<ArrowBackIcon />}
+                onClick={() => navigate(-1)}
+                sx={{ mb: 2 }}
+            >
+                Back to Shop
+            </Button>
             <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>
                 <Link component={RouterLink} underline="hover" color="inherit" to="/dashboard">
                     Products
@@ -126,6 +133,7 @@ function ProductDetailPage() {
                 </Grid>
             </Grid>
         </Container>
+        </>
     );
 }
 

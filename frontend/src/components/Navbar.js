@@ -4,6 +4,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { getUserFromToken } from '../utils/auth';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import InfoIcon from '@mui/icons-material/Info';
 
 const user = getUserFromToken();
 
@@ -23,6 +24,9 @@ function Navbar() {
                 </Typography>
                 <IconButton component={RouterLink} to="/cart" color="inherit">
                     <ShoppingCartIcon />
+                </IconButton>
+                <IconButton component={RouterLink} to="/aboutme" color="inherit">
+                    <InfoIcon />
                 </IconButton>
                 {user && user.role === 'admin' && (
                     <IconButton component={RouterLink} to="/admin" color="inherit" >

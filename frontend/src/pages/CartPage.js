@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Navbar from '../components/Navbar';
 
 function CartPage() {
     const [cartItems, setCartItems] = useState([]);
@@ -74,10 +75,16 @@ function CartPage() {
     
 
     return (
+        <>
+            <Navbar />
         <Container sx={{ py: 4 }}>
-            <IconButton onClick={() => navigate(-1)} sx={{ mr: 2 }}>
-                    <ArrowBackIcon />
-            </IconButton>
+            <Button
+                startIcon={<ArrowBackIcon />}
+                onClick={() => navigate(-1  )}
+                sx={{ mb: 2 }}
+            >
+                Back to Shop
+            </Button>
             <Typography variant="h4" gutterBottom>Your Shopping Cart</Typography>
             {cartItems.length === 0 ? (
                 <Paper sx={{ p: 3, textAlign: 'center' }}>
@@ -118,7 +125,9 @@ function CartPage() {
                 </Paper>
             )}
         </Container>
+         </>
     );
+   
 }
 
 export default CartPage;

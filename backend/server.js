@@ -32,6 +32,23 @@ app.get('/api/profile', requireAuth, (req, res) => {
     });
 });
 
+app.put ('/api/profile', requireAuth, async (req, res) => {
+    const { displayName } = req.body;
+    const userId = req.user.id;
+
+    try {   
+        const pool = require('./config/db');
+        await pool.query('UPDATE users SET displayName = ? WHERE id = ?', [displayName, userId]);
+        const [rows] = await pool.query('SELECT id, email, displayName, role FROM users WHERE id = ?', [userId]);
+        res.json({ message: 'Profile updated', user: rows[0] });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+
 // Route สำหรับ Admin เท่านั้น
 app.get('/api/admin/dashboard', requireAuth, requireAdmin, (req, res) => {
     res.json({
