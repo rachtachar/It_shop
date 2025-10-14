@@ -82,6 +82,7 @@ function CartPage() {
                 startIcon={<ArrowBackIcon />}
                 onClick={() => navigate(-1  )}
                 sx={{ mb: 2 }}
+                color='black'
             >
                 Back to Shop
             </Button>
@@ -89,7 +90,7 @@ function CartPage() {
             {cartItems.length === 0 ? (
                 <Paper sx={{ p: 3, textAlign: 'center' }}>
                     <Typography variant="h6">Your cart is empty.</Typography>
-                    <Button component={RouterLink} to="/dashboard" variant="contained" sx={{ mt: 2 }}>
+                    <Button component={RouterLink} to="/dashboard" variant="contained" sx={{ mt: 2,backgroundColor:"black", '&:hover': { backgroundColor: '#333' } }}>
                         Continue Shopping
                     </Button>
                 </Paper>

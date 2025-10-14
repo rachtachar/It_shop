@@ -1,40 +1,45 @@
-# docker-compose.yml
 version: '3.8'
 
 services:
-  # Service สำหรับ Database (ใช้ Image MySQL แทน XAMPP)
+  # 1. Database Service (MySQL)
   database:
     image: mysql:8.0
+    container_name: it_shop_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} # ดึงค่าจากไฟล์ .env
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: 1234 # ★★★ เปลี่ยนเป็นรหัสผ่านของคุณ
+      MYSQL_DATABASE: it_shop_db # ★★★ ชื่อฐานข้อมูล
+    ports:
+      - "3306:3306"
     volumes:
-      - db-data:/var/lib/mysql # เก็บข้อมูล DB ไว้แม้จะปิด Container
+      - db-data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  # Service สำหรับ Backend
+  # 2. Backend Service (Node.js)
   backend:
-    build: ./backend # บอกให้สร้าง Image จาก Dockerfile ในโฟลเดอร์ backend
+    build: ./backend
+    container_name: it_shop_backend
     restart: always
     ports:
-      - "5000:5000" # Map Port 5000 ของเครื่องเรากับ Port 5000 ใน Container
+      - "5000:5000"
     environment:
-      - DB_HOST=database # ✨ สำคัญ: Host ของ DB คือชื่อ Service 'database'
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - JWT_SECRET=${JWT_SECRET}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      DB_HOST: database # ★★★ Host ชี้ไปที่ชื่อ service ของ database
+      DB_USER: root # ★★★ User ของ database
+      DB_PASSWORD: 1234 # ★★★ รหัสผ่านเดียวกับข้างบน
+      DB_NAME: it_shop_db # ★★★ ชื่อฐานข้อมูลเดียวกับข้างบน
+      JWT_SECRET: YOUR_SUPER_SECRET_KEY_HERE # ★★★ JWT Secret ของคุณ
+      GOOGLE_CLIENT_ID: 940563183804-5daqrcd06oad551mu74cvekrbgtrpeg4.apps.googleusercontent.com # ★★★
+      GOOGLE_CLIENT_SECRET: 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 # ★★★
     depends_on:
-      - database # บอกให้ Backend รอจนกว่า Database จะพร้อมทำงาน
+      - database
 
-  # Service สำหรับ Frontend
+  # 3. Frontend Service (React)
   frontend:
-    build: ./frontend # บอกให้สร้าง Image จาก Dockerfile ในโฟลเดอร์ frontend
+    build: ./frontend
+    container_name: it_shop_frontend
     restart: always
     ports:
-      - "3000:80" # Map Port 3000 ของเครื่องเรากับ Port 80 ของ Nginx ใน Container
+      - "3000:80" # Map Port 3000 ของเครื่องคุณไปยัง Port 80 ของ Nginx
 
 volumes:
-  db-data: # สร้าง Volume ชื่อ db-data
+  db-data:

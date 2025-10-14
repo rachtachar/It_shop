@@ -4,12 +4,12 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage'; // สร้าง Component นี้คล้ายๆ LoginPage
 import Dashboard from './pages/Dashboard';
 import AuthCallback from './pages/AuthCallback';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminManageProduct from './pages/AdminManageProduct';
 import { getUserFromToken } from './utils/auth';
 import AboutMe from  './pages/AboutMe';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
-import TestProduct from './pages/testproduct'
+import AdminManageUser from './pages/AdminManageUser';
 
 // Component สำหรับป้องกันการเข้าถึงหน้า Dashboard หากยังไม่ได้ Login
 const PrivateRoute = ({ children }) => {
@@ -33,7 +33,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/test" element={<TestProduct />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/cart" element={
@@ -41,35 +40,38 @@ function App() {
             <CartPage />
           </PrivateRoute>} 
         />
-        <Route
-          path="/dashboard"
+        <Route path="/dashboard"
           element={
             <PrivateRoute> 
               <Dashboard /> 
             </PrivateRoute>
           }
         />
-        <Route
-          path="/aboutme"
+        <Route path="/aboutme"
           element={
             <PrivateRoute> 
               <AboutMe /> 
             </PrivateRoute>
           }
         />
-        <Route
-          path="/product/:id"
+        <Route path="/product/:id"
           element={
             <PrivateRoute>
               <ProductDetailPage />
             </PrivateRoute>
           }
         />
-        <Route
-          path="/admin/"
+        <Route path="/admin/product_manage"
           element={
             <AdminRoute>
-              <AdminDashboard />
+              <AdminManageProduct />
+            </AdminRoute>
+          }
+        />
+        <Route path="/admin/user_manage"
+          element={
+            <AdminRoute>
+              <AdminManageUser />
             </AdminRoute>
           }
         />

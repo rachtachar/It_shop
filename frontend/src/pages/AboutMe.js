@@ -89,7 +89,7 @@ const handleSettingsSubmit = async (formData) => {
             </Box>
         );
     }
-
+console.log(user.displayName);
     // เมื่อได้ข้อมูล user แล้ว ให้แสดง Dashboard
      return (
         <>
@@ -99,6 +99,7 @@ const handleSettingsSubmit = async (formData) => {
                 startIcon={<ArrowBackIcon />}
                 onClick={() => navigate('/dashboard')}
                 sx={{ mb: 2 }}
+                color='black'
             >
                 Back to Shop
             </Button>
@@ -110,21 +111,48 @@ const handleSettingsSubmit = async (formData) => {
 
                 <Grid container spacing={3}>
                     {/* User Info Card */}
-                    <Grid item xs={12} md={6}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h6">Your Information</Typography>
-                                <Typography>Email: {user.email}</Typography>
-                                <Typography>Display Name: {user.displayName || 'N/A'}</Typography>
-                                <Typography>Role: {user.role.charAt(0).toUpperCase() + user.role.slice(1)}</Typography>
-                                {user.role === 'admin' && (
-                                    <Button component={Link} to="/admin" variant="contained" color="secondary" sx={{ mt: 2 }}>
-                                        Go to Admin Panel
-                                    </Button>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </Grid>
+                   <Grid item xs={12} md={6}>
+    <Card>
+        <CardContent>
+            <Typography variant="h6">Your Information</Typography>
+            <Typography>Email: {user.email}</Typography>
+            <Typography>Display Name: {user.displayName || 'N/A'}</Typography>
+            <Typography>Role: {user.role.charAt(0).toUpperCase() + user.role.slice(1)}</Typography>
+            
+            
+            {/* --- ใช้ Box จัดการ Layout ของปุ่ม --- */}
+            {user.role === 'admin' && (
+                <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', // <-- 1. จัดเรียงในแนวตั้ง
+                    alignItems: 'flex-start', // <-- 2. จัดให้ปุ่มชิดซ้าย
+                    mt: 2 // <-- 3. เพิ่มระยะห่างด้านบน
+                }}>
+                    <Button 
+                        component={Link} 
+                        to="/admin/product_manage" 
+                        variant="contained" 
+                        color="secondary"
+                        sx={{ mb: 1, backgroundColor:"red" }} // <-- 4. เพิ่มระยะห่างระหว่างปุ่ม
+                    >
+                        Go to Product Manage
+                    </Button>
+                    <Button 
+                        component={Link} 
+                        to="/admin/user_manage" 
+                        variant="contained" 
+                        color="secondary" 
+                        sx={{ mt: 1, backgroundColor:"red" }} // <-- 4. เพิ่มระยะห่างระหว่างปุ่ม
+                    >
+                        Go to User Manage
+                    </Button>
+                </Box>
+            )}
+            {/* ------------------------------------ */}
+            
+        </CardContent>
+    </Card>
+</Grid>
                     
                     {/* Settings Card */}
                     <Grid item xs={12} md={6}>
@@ -132,7 +160,7 @@ const handleSettingsSubmit = async (formData) => {
                             <CardContent>
                                 <Typography variant="h6">Settings</Typography>
                                 <Typography color="text.secondary">Manage your account.</Typography>
-                                <Button variant='contained' color="primary" sx={{ mt: 2 }} onClick={handleOpen}>
+                                <Button variant='contained' color="primary" sx={{ mt: 2, backgroundColor: "black"}} onClick={handleOpen}>
                                     Edit Profile
                                 </Button>
                             </CardContent>

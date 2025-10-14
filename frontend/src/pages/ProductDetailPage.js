@@ -12,7 +12,6 @@ import {
     Link,
     Snackbar,
     Alert,
-    IconButton
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Navbar from '../components/Navbar';
@@ -87,7 +86,7 @@ function ProductDetailPage() {
             <Button
                 startIcon={<ArrowBackIcon />}
                 onClick={() => navigate(-1)}
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, color:'black' }}
             >
                 Back to Shop
             </Button>
@@ -116,13 +115,13 @@ function ProductDetailPage() {
                     <Typography variant="h3" component="h1" gutterBottom>
                         {product.name}
                     </Typography>
-                    <Typography variant="h5" color="primary" sx={{ mb: 2 }}>
+                    <Typography variant="h5" color="green" sx={{ mb: 2 }}>
                         ฿{product.price}
                     </Typography>
                     <Typography variant="body1" paragraph>
                         {product.description}
                     </Typography>
-                    <Button variant="contained" size="large" sx={{ mt: 2 }} onClick={handleAddToCart}>
+                    <Button variant="contained" size="large" sx={{ mt: 2,backgroundColor:'black','&:hover': { backgroundColor: '#333'} }} onClick={handleAddToCart}>
                         Add to Cart
                     </Button>
                     <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>

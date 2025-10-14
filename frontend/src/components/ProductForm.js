@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Box, Typography } from '@mui/material';
+import { DialogActions } from '@mui/material';
 
-function ProductForm({ onSubmit, initialData = {} }) {
+function ProductForm({ onSubmit, initialData  = {},onCancel }) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -29,9 +30,12 @@ function ProductForm({ onSubmit, initialData = {} }) {
             <TextField margin="normal" required fullWidth multiline rows={4} label="Description" value={description} onChange={e => setDescription(e.target.value)} />
             <TextField margin="normal" required fullWidth type="number" label="Price" value={price} onChange={e => setPrice(e.target.value)} />
             <TextField margin="normal" fullWidth label="Image URL" value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-                {initialData.id ? 'Save Changes' : 'Create Product'}
-            </Button>
+            <DialogActions sx={{ mt: 2, p: 0, }}>
+                <Button onClick={onCancel} color='black'  >Cancel</Button>
+                <Button type="submit" variant="contained" sx={{backgroundColor: 'black', ":hover": { backgroundColor: '#333' }}}>
+                    {initialData.id ? 'Save Changes' : 'Create Product'}
+                </Button>
+            </DialogActions>
         </Box>
     );
 }

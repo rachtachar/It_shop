@@ -104,6 +104,7 @@ function AdminDashboard() {
                     <Button
                         variant="contained"
                         onClick={() => handleOpen()}
+                        sx={{ backgroundColor: 'black', ":hover": { backgroundColor: '#333' } }}
                     >
                         Add New Product
                     </Button>
@@ -112,10 +113,11 @@ function AdminDashboard() {
 
             <Button
                 startIcon={<ArrowBackIcon />}
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/aboutme')}
+                color='black'
                 sx={{ mb: 2 }}
             >
-                Back to Shop
+                Back
             </Button>
 
             <TableContainer component={Paper}>
@@ -145,7 +147,7 @@ function AdminDashboard() {
             {/* Dialog for Create/Edit Form */}
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
-                    <ProductForm onSubmit={handleFormSubmit} initialData={editingProduct || {}} />
+                    <ProductForm onSubmit={handleFormSubmit} initialData={editingProduct || {}} onCancel={handleClose}/>
                 </DialogContent>
             </Dialog>
         </Container>

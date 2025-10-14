@@ -47,9 +47,9 @@ function SettingForm({ currentUser, onSubmit, onCancel }) {
             />
             
             {/* จัดกลุ่มปุ่มด้วย DialogActions เพื่อให้มี Layout ที่สวยงาม */}
-            <DialogActions sx={{ mt: 2, p: 0 }}>
-                <Button onClick={onCancel}>Cancel</Button>
-                <Button type="submit" variant="contained">
+            <DialogActions sx={{ mt: 2, p: 0, }}>
+                <Button onClick={onCancel} color='black'  >Cancel</Button>
+                <Button type="submit" variant="contained" sx={{backgroundColor: 'black', ":hover": { backgroundColor: '#333' }}}>
                     Save Changes
                 </Button>
             </DialogActions>

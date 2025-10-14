@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
-import { Button, TextField, Container, Typography, Box, Grid } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Button, TextField, Container, Typography, Box, Grid, Link, Paper, Avatar } from '@mui/material';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import GoogleIcon from '@mui/icons-material/Google';
 
+// ใช้ Theme ขาว-ดำ ให้เหมือนกับหน้า Login
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: { main: '#ffffff' },
+    background: { default: '#121212', paper: '#1e1e1e' },
+    text: { primary: '#ffffff', secondary: '#b3b3b3' },
+  },
+});
 
 function RegisterPage() {
   const [displayName, setDisplayName] = useState('');
@@ -10,100 +22,127 @@ function RegisterPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  // ฟังก์ชันสำหรับจัดการการลงทะเบียน
   const handleRegister = async (e) => {
-    e.preventDefault(); // ป้องกันการรีเฟรชหน้าเว็บเมื่อกด submit
+    e.preventDefault();
     try {
-      // ส่ง request ไปยัง backend
-      const res = await axios.post('http://localhost:5000/api/auth/register', {
-        displayName,
-        email,
-        password,
+      await axios.post('http://localhost:5000/api/auth/register', {
+        displayName, email, password,
       });
-
-      
-
-      console.log(res.data);
       alert('Registration successful! Please log in.');
-      navigate('/login'); // เมื่อสำเร็จ ให้ redirect ไปหน้า login
+      navigate('/login');
     } catch (error) {
-      console.error('Registration failed:', error.response.data);
+      console.error('Registration failed:', error.response?.data);
       alert('Registration failed. The email might already be in use.');
     }
   };
+  const handleGoogleLogin = () => {
+        window.location.href = 'http://localhost:5000/api/auth/google';
+    };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
+    <ThemeProvider theme={darkTheme}>
+      <Grid
+        container
+        component="main"
         sx={{
-          marginTop: 8,
+          height: '100vh',
+          backgroundColor: 'background.default',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} size={12}>
+        <Grid
+          component={Paper}
+          elevation={6}
+          // ปรับขนาดตามหน้าจอ
+          xs={11} sm={8} md={5} lg={4}
+          sx={{
+            p: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRadius: 2,
+            backgroundColor: 'background.paper'
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main', color: 'black' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
+
+          {/* ★★★ ส่วนของฟอร์มที่แก้ไขแล้ว ★★★ */}
+          <Box component="form" noValidate onSubmit={handleRegister} sx={{ mt: 3, width: '100%' }}>
+
+            <Grid container spacing={2}>
               <TextField
-                autoComplete="given-name"
                 name="displayName"
                 required
                 fullWidth
-                id="displayName"
                 label="Display Name"
                 autoFocus
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
               />
-            </Grid>
-            <Grid item xs={12} size={12}>
               <TextField
                 required
                 fullWidth
-                id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-            </Grid>
-            <Grid item xs={12} size={12}>
               <TextField
                 required
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+
             </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link to="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3, mb: 2, py: 1.2,
+                backgroundColor: 'white', color: 'black', fontWeight: 'bold',
+                '&:hover': { backgroundColor: '#e0e0e0' }
+              }}
+            >
+              Sign Up
+            </Button>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        startIcon={<GoogleIcon />}
+                        onClick={handleGoogleLogin}
+                        sx={{ 
+                            mt: 1, 
+                            mb: 2,
+                            color: 'white',
+                            borderColor: 'rgba(255, 255, 255, 0.5)'
+                        }}
+                    >
+                        Sign Up with Google
+                    </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link component={RouterLink} to="/login" variant="body2" color="text.secondary">
+                  Already have an account?
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </Box>
-    </Container>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
 }
 

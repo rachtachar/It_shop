@@ -45,7 +45,7 @@ const jwtOptions = {
 
 passport.use(new JwtStrategy(jwtOptions, async (payload, done) => {
   try {
-    const [rows] = await pool.query('SELECT id, email, role FROM users WHERE id = ?', [payload.id]);
+    const [rows] = await pool.query('SELECT id, email, role, displayName FROM users WHERE id = ?', [payload.id]);
     const user = rows[0];
 
     if (user) {

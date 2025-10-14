@@ -135,12 +135,12 @@ function ProductDashboard() {
                     >
                       {product.name}
                     </Typography>
-                    <Typography variant="body1" color="primary">
+                    <Typography variant="body1" color="green">
                       ฿{product.price}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" component={Link} to={`/product/${product.id}`}>
+                    <Button color="black" size="small" component={Link} to={`/product/${product.id}`}>
                       See Details
                     </Button>
                   </CardActions>

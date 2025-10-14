@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
 require('dotenv').config();
-
+const userRoutes = require('./routes/users');
+const jwt = require('jsonwebtoken');
 // Import routes
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products'); 
@@ -22,6 +23,7 @@ require('./config/passport');
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', requireAuth, cartRoutes);
+app.use('/api/users', requireAuth, userRoutes);
 
 // Route สำหรับดึงข้อมูลโปรไฟล์ผู้ใช้ (ต้อง Login)
 app.get('/api/profile', requireAuth, (req, res) => {
